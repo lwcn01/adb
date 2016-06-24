@@ -3,7 +3,7 @@
 from Utils.adb import *
 from Utils.util import *
 """
-抓取APP数据包，文件保存在桌面app目录下
+抓取APP数据包，文件保存在桌面log目录下
 """
 adb = Adb()
 def tcp_dump(num):
