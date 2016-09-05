@@ -8,12 +8,12 @@ dropbox存储系统崩溃信息
 未及时抓取APP的log时，通过dropbox获取其crash log
 """
 adb = Adb()
-def crash_time():
+def crash_time(app_crash):
     if os.name == 'nt':
         find = 'findstr'
     else:
         find = 'grep'
-    crash_time = adb.shell("dumpsys dropbox | %s data_app_crash" %find).stdout.readlines()
+    crash_time = adb.shell("dumpsys dropbox | %s %s" %(find,app_crash)).stdout.readlines()
     timestamp = []
     for time in crash_time:
         l = []
@@ -23,12 +23,13 @@ def crash_time():
     return timestamp
 
 def crash_log(timestamp):
-    times = time.strftime('%Y-%m-%d_%H.%M.%S',time.localtime(time.time())) + ".txt"
+    times = time.strftime('%Y-%m-%d_%H.%M.%S',time.localtime(time.time())) + ".log"
     with open(os.path.join(CreateDir('path3'),times),'w') as f:
         for t in timestamp:
             f.write(adb.shell("dumpsys dropbox --print %s" %t).stdout.read().decode('utf-8'))
 
 if __name__ == '__main__':
-    crash_log(crash_time())
+    crash_log(crash_time('data_app_crash'))
+    crash_log(crash_time('system_app_crash'))
     print('Crash日志存放 ---> ' + CreateDir('path3'))
     Pause()
