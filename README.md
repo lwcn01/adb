@@ -1,5 +1,30 @@
-说明：
-- python3.x环境 + Android开发环境
-- Utils包封装了一些adb命令,脚本文件依赖于该包
-- /adb/目录下*.py文件是可执行文件，具体实现功能查看对应代码注释
-- *.py文件基本未做异常处理,需要先让adb连接上设备，才能使用
+### Android Test Tools
+
+#### Develop Environment ####
+- Android IDE
+- Python3.x IDE
+
+#### Project Directory ####
+```
+adb
+ |----Utils
+ |      |----__init__.py
+ |      |----adb.py           # module
+ |      |----util.py          # module
+ |----AdbConnect.py           # check ADB status
+ |----AppInfo.py              # view local &mobile app's info
+ |----ClearApp.py             # clear app's cache
+ |----CrashLog.py             # get crash log via cache
+ |----DeviceInfo.py           # view device's info
+ |----DiffImg.py              # contrast img
+ |----GetApp.py               # get app frome mobile
+ |----InstallApp.py           # batch install app 
+ |----Logcat.py               # print log
+ |----ScreenRecord.py         # record the screen
+ |----ScreenShot.py           # screen shot
+ |----TcpDump.py              # capture data packets
+ |----TransferFile.py         # transfer file on local &mobile
+ |----UninstallApp.py         # batch uninstall app 
+ |----WebLogin.py             # login android web
+ |----setup.py                # setup
+```
