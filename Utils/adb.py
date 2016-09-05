@@ -19,7 +19,7 @@ def DisConnect(ip):
     return Adb.adb("disconnect %s" %ip)
 
 def DeviceList():
-    return Adb.adb("devices -l").stdout.read().strip()
+    return Adb.adb("devices -l").stdout.read().decode('utf-8').strip()
 
 def Push(local_path,remote_path):
     """
@@ -43,11 +43,11 @@ def Sync():
 def Bugreport():
     try:
         #utf-8编码文件，忽略非法编码字符
-        f = open(os.path.join(os.getcwd(),'bugreport.log'),'w',encoding='utf-8',errors='ignore')
+        f = open(os.path.join(CreateDir("path3"),'bugreport.log'),'w',encoding='utf-8',errors='ignore')
     except IOError:
         pass
     else:
-        f.write(Adb.adb("bugreport").stdout.read())
+        f.write(Adb.adb("bugreport").stdout.read().decode("utf-8", "replace"))
     finally:
         f.close()
     return
@@ -121,7 +121,11 @@ def ClearAppData(PackageName):
         return Adb.shell('pm clear %s' %PackageName)
 
 def AppPid(PackageName):
-    PidInfo = Adb.shell("ps | grep %s" %PackageName).stdout.read()
+    if os.name == 'nt':
+        find = 'findstr'
+    else:
+        find = 'grep'
+    PidInfo = Adb.shell("ps | %s %s" %(find,PackageName)).stdout.read().decode('utf-8').strip()
     if PidInfo !='':
         return re.split(r'\s+',PidInfo)[1]
 
@@ -136,8 +140,8 @@ def QuitApp(PackageName):
 
 def AppInfo(PackageName):
     if IsAppInstall(PackageName):
-        with open(os.path.join(os.getcwd(),'AppInfo.txt'),'w') as f:
-            f.write(Adb.shell('pm dump %s' %PackageName).stdout.read())
+        with open(os.path.join(CreateDir('path2'),'AppInfo.txt'),'w') as f:
+            f.write(Adb.shell('pm dump %s' %PackageName).stdout.read().decode('utf-8').strip())
     return
 
 def ScreenShot(pic_path):
@@ -196,3 +200,16 @@ def Web(url):
 
 def Phone(num):
     return Adb.shell("am start -a android.intent.action.CALL -d tel:%s" %str(num))
+
+def Uidump():
+    """
+    获取当前Activity的控件树
+    """
+    if int(Adb.SdkVersion()) >= 19:
+        Adb.shell("uiautomator dump --compressed /data/local/tmp/uidump.xml").wait()
+    else:
+        Adb.shell("uiautomator dump /data/local/tmp/uidump.xml").wait()
+    Pull("/data/local/tmp/uidump.xml", CreateDir('path2')).wait()
+    Adb.shell("rm /data/local/tmp/uidump.xml").wait()
+
+    return
