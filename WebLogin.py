@@ -14,6 +14,10 @@ if __name__ == '__main__':
             # 在窗口输入域名地址即可，如：www.baidu.com
             url = input("\n输入url地址：")
             if type(url) == str:
+                if url.strip().split(".")[0] == "www":
+                    url = url.strip()
+                else:
+                    url = "www." + url.strip()
                 try:
                     Web(url).wait()
                 except Exception as e:
