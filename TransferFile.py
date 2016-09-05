@@ -14,13 +14,17 @@ def PushFile(pc_file):
 
 def PullFile(mobile_file):
     """
-    - usage: PullFile('/sdcard/xxx.txt')
+    - usage: PullFile('xxx.txt')
     """
     local_path = os.path.expanduser('~') + '\Desktop'
     if len(mobile_file) == 0:
         print("\n路径错误")
         Pause()
         exit(1)
+    elif "sdcard" not in mobile_file:
+        if "\\" in mobile_file:
+            mobile_file = mobile_file.strip("\\")
+        remote_path = "/sdcard/" + mobile_file.strip("/")
     elif "\\" in mobile_file:
         remote_path = mobile_file.replace("\\","/")
     else:
@@ -52,9 +56,15 @@ if __name__ == '__main__':
                 elif int(number) == 1:
                     # 直接将本地文件拖入该脚本窗口，即可获取路径
                     pc_file = input("\n本地文件路径：")
-                    if not os.path.exists(pc_file.strip()):
+                    if pc_file.index("\"") != -1:
+                        pc_file = pc_file[pc_file.index("\"")+1:]
+                        if pc_file.rindex("\"") != -1:
+                            pc_file = pc_file[:pc_file.index("\"")]
+                    else:
+                        pc_file = pc_file.strip()
+                    if not os.path.exists(pc_file):
                         print("\n路径不存在")
-                    elif not os.path.isfile(pc_file.strip()):
+                    elif not os.path.isfile(pc_file):
                         print("\n路径错误")
                     else:
                         try:
