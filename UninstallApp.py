@@ -8,6 +8,8 @@ from Utils.util import *
 """
 def Uninstall():
     applist = ThirdAppList()
+    count = len(applist)
+    print("共：%s 个应用\n" %count)
     AppUninstall(*applist)
     print('卸载完成！')
 
