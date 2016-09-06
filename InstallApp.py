@@ -94,24 +94,30 @@ def ExtendStorage():
                         usb = usb.strip().decode("utf-8")
                         if "sda" in usb:
                             usb_name = usb
-                            remote_path = "/storage/external_storage/%s/apps" %usb_name
+                            remote_path = "/mnt/%s/apps" %usb_name
                             break
                         elif "sdb" in usb:
                             usb_name =usb
-                            remote_path = "/storage/external_storage/%s/apps" %usb_name
+                            remote_path = "/mnt/%s/apps" %usb_name
                             break
                      
                     return remote_path                            
 
             elif "card" in i:
-                for card in adb.shell("ls /storage/external_storage").stdout.readlines():
-                    card = card.strip().decode("utf-8")
-                    if "sdcard" in card:
-                        card_name = card
-                        remote_path = "/storage/external_storage/%s/apps" %card_name
+                if int(sdk) >= 17:
+                    for card in adb.shell("ls /storage/external_storage").stdout.readlines():
+                        card = card.strip().decode("utf-8")
+                        if "sdcard" in card:
+                            card_name = card
+                            remote_path = "/storage/external_storage/%s/apps" %card_name
                 
-                        return remote_path
-    
+                    return remote_path
+                elif int(sdk) < 17:
+
+                    remote_path = "/sdcard/external_sdcard/apps" 
+                
+                    return remote_path
+
 if __name__ == '__main__':
     adb = Adb()
     if adb_env:
