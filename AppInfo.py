@@ -23,18 +23,25 @@ def get_package_info(spath):
             package_name = package_info.split('\n')[0].split("'")[1]
             versionCode = package_info.split('\n')[0].split("'")[3]
             versionName = package_info.split('\n')[0].split("'")[5]
-            app_activity = re.findall(r'[a-zA-Z]{10}\-\w{8}\:\s+\w{4}\=(.*?)\s',package_info)
+            activity = re.findall(r'[a-zA-Z]{10}\-\w{8}\:\s+\w{4}\=(.*?)\s',package_info)
+            if len(activity) == 0:
+                app_activity = 'Null'
+            else:
+                app_activity = activity[0].strip("'")
             app_name = re.findall(r"application-label-zh-CN\:\'(.*)\'",package_info)
             if len(app_name) == 0:
                 app_name = re.findall(r"application-label-es\:\'(.*)\'",package_info)
                 if len(app_name) == 0:
-                    packagePath = AppPath(CurrentPackageName()[0])[0].split("/")[-1]
-                    app_name = re.findall(r"(.*)\.apk",packagePath)
+                    if int(num) == 0:
+                        packagePath = AppPath(CurrentPackageName()[0])[0].split("/")[-1]
+                        app_name = re.findall(r"(.*)\.apk",packagePath)
+                    elif int(num) == 1:
+                        app_name = spath.split("\\")[-1].split(".")
             print('应用名称：' + app_name[0],
                   '应用包名: ' + package_name,
                   '应用版本名: ' + versionName,
                   '应用版本号: ' + versionCode,
-                  '应用Activity名：' + app_activity[0].strip("'"),
+                  '应用Activity名：' + app_activity,
                   sep='\n')
 
 def app_info(num):
@@ -48,7 +55,7 @@ def app_info(num):
         if os.path.exists(path):
             if os.path.isfile(path):
                 if os.path.splitext(path)[1] == ".apk":
-                    return path
+                    return path.strip()
     else:
         pass
 
