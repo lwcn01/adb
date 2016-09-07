@@ -71,6 +71,7 @@ def ExtendStorage():
     for info in adb.shell("cat /proc/partitions").stdout.readlines():
         if len(info.strip()) != 0:
             i = info.strip().decode("utf-8")
+            #usb-disk
             if "sd" in i:
                 if int(sdk) >= 17:
                     for usb in adb.shell("ls /storage/external_storage").stdout.readlines():
@@ -88,7 +89,7 @@ def ExtendStorage():
                             remote_path = "/storage/external_storage/%s/apps" %usb_name
                             break
                     return remote_path
-    
+                #4.2.4 = 17
                 elif int(sdk) < 17:
                     for usb in adb.shell("ls /mnt").stdout.readlines():
                         usb = usb.strip().decode("utf-8")
@@ -102,21 +103,30 @@ def ExtendStorage():
                             break
                      
                     return remote_path                            
-
+            #sdcard
             elif "card" in i:
-                if int(sdk) >= 17:
+            #4.0.4 = 15
+                if int(sdk) < 17: 
+                    remote_path = "/sdcard/external_sdcard/apps"
+                    return remote_path
+            #4.2.4 = 17
+                elif int(sdk) >= 17:
                     for card in adb.shell("ls /storage/external_storage").stdout.readlines():
                         card = card.strip().decode("utf-8")
                         if "sdcard" in card:
                             card_name = card
                             remote_path = "/storage/external_storage/%s/apps" %card_name
+                    
+                    return remote_path                     
+            #4.4.2  5.1.1
+            elif "mmcblk" in i:
+                for card in adb.shell("ls /storage/external_storage").stdout.readlines():
+                    card = card.strip().decode("utf-8")
+                    if "sdcard" in card:
+                        card_name = card
+                        remote_path = "/storage/external_storage/%s/apps" %card_name
                 
-                    return remote_path
-                elif int(sdk) < 17:
-
-                    remote_path = "/sdcard/external_sdcard/apps" 
-                
-                    return remote_path
+                return remote_path             
 
 if __name__ == '__main__':
     adb = Adb()
