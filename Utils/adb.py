@@ -170,20 +170,20 @@ def Pause():
 
 def CreateDir(num):
     desktop = os.path.expanduser('~') + '\Desktop'
-    path1 = os.path.join(desktop,'app')
-    package = AppPath(CurrentPackageName()[0])[0].split("/")[-1]
-    app_name = re.findall(r"(.*)\.apk",package)
-    path2 = os.path.join(desktop,app_name[0])
-    path3 = os.path.join(desktop,'log')
     if num == 'path1':
+        path1 = os.path.join(desktop,'app')
         if not os.path.exists(path1):
             os.mkdir(path1)
         return path1
     elif num == 'path2':
+        package = AppPath(CurrentPackageName()[0])[0].split("/")[-1]
+        app_name = re.findall(r"(.*)\.apk",package)
+        path2 = os.path.join(desktop,app_name[0])
         if not os.path.exists(path2):
             os.mkdir(path2)
         return path2
     elif num == 'path3':
+        path3 = os.path.join(desktop,'log')
         if not os.path.exists(path3):
             os.mkdir(path3)
         return path3
