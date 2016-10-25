@@ -22,11 +22,11 @@ def rFile(path):
         print("\nNone Log File...")
     else:
         text = os.path.join(os.path.dirname(path),"Log_" + timestamp + ".log")   
-        writeLog = open(text,'w',encoding='gbk',errors='ignore')
+        writeLog = open(text,'w',encoding='utf-8',errors='ignore')
         rank = input("\nLog Rank（Enter means view lines）：")
         if rank.islower():
             rank = rank.upper()
-        with open(path,'r',encoding='gbk',errors='ignore') as f:
+        with open(path,'r',encoding='utf-8',errors='ignore') as f:
             data = f.readlines()
             if rank == "V" or rank == "D" or rank == "I" or rank == "W" or rank == "E":
                 for txt in data:
