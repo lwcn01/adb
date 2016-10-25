@@ -18,6 +18,7 @@ adb
  |----DeviceInfo.py           # view device's info
  |----DiffImg.py              # contrast img
  |----GetApp.py               # get app frome mobile
+ |----HandleLog.py            # filter the local log 
  |----InstallApp.py           # batch install app 
  |----Logcat.py               # print log
  |----ScreenRecord.py         # record the screen
