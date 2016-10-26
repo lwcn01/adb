@@ -17,7 +17,15 @@ if __name__ == '__main__':
     adb = Adb()
     status = adb.DeviceStatus()
     if 'device' == status:
-        Uninstall()
+        print("0 卸载单个应用\n1 卸载全部应用\n")
+        num = int(input("输入数字："))
+        if num == 0:
+            AppUninstall(CurrentPackageName()[0])
+            print('\n卸载完成！')
+        elif num == 1:
+            Uninstall()
+        else:
+            pass
     else:
         print('adb disconnect')
     Pause()
