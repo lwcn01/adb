@@ -37,7 +37,7 @@ def handlePermission(packageName):
         f.close
         print("permission.txt文件位置：" + CreateDir('path2') + "\n")
     else:
-        print("package: %s\n" %package_name)
+        print("package: %s\n" %packageName)
         for permission in permissionList:
             for permission_dict in file_content:
                 if permission == permission_dict["Key"]:
